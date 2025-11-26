@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>電気電子回路1 演習 05</title>
+    <style>
+        body { font-family: "Helvetica Neue", Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
+        h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; color: #007bff; }
+        h2 { margin-top: 30px; background-color: #f4f4f4; padding: 10px; border-left: 5px solid #007bff; font-size: 1.1em; }
+        ul { list-style-type: none; padding: 0; }
+        li { padding: 8px 0; border-bottom: 1px solid #eee; }
+        details { margin-top: 15px; background-color: #eef; border-radius: 5px; padding: 10px; cursor: pointer; transition: 0.2s; }
+        details:hover { background-color: #dde; }
+        summary { font-weight: bold; color: #0056b3; outline: none; }
+        details p { margin: 10px 0 0 0; font-weight: bold; color: #d63384; }
+        .nav { margin-bottom: 20px; padding: 10px; background: #f8f9fa; border-radius: 8px; text-align: center; }
+        .nav a { display: inline-block; margin: 0 5px; padding: 5px 10px; background: #fff; border: 1px solid #ddd; text-decoration: none; color: #333; border-radius: 4px; }
+        .nav a.active { background: #007bff; color: white; border-color: #007bff; }
+        .nav a:hover:not(.active) { background: #eee; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <strong>演習切替:</strong>
+        <a href="ex01.html" class="">01</a>
+        <a href="ex02.html" class="">02</a>
+        <a href="ex03.html" class="">03</a>
+        <a href="ex04.html" class="">04</a>
+        <a href="ex05.html" class="active">05</a>
+        <a href="ex06.html" class="">06</a>
+        <a href="ex07.html" class="">07</a>
+    </div>
+
+    <h1>電気電子回路1 - 演習 05</h1>
+    
+        <h2>Q1 (05-1-a)</h2>
+        <p>2 つのスイッチ SW1 と SW2 とランプを直列に接続してランプを制御する場合,実現される論理演算はどれか。</p>
+        <ul>
+            <li>(ア) OR 演算</li>
+<li>(イ) AND 演算</li>
+<li>(ウ) NOT 演算</li>
+<li>(エ) XOR 演算</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (イ) AND 演算</p>
+        </details>
+        
+        <h2>Q2 (05-1-b)</h2>
+        <p>機器の緊急停止ボタンに最適なスイッチの接触形式はどれか。</p>
+        <ul>
+            <li>(ア) b 接点(NC)</li>
+<li>(イ) a 接点(NO)</li>
+<li>(ウ) c 接点</li>
+<li>(エ) どれでも同じ</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (ア) b 接点(NC)</p>
+        </details>
+        
+        <h2>Q3 (05-1-c)</h2>
+        <p>ボタンを押している間のみ動作し,離すと停止する動作を何というか。</p>
+        <ul>
+            <li>(ア) モーメンタリ動作</li>
+<li>(イ) オルタネート動作</li>
+<li>(ウ) シーケンス動作</li>
+<li>(エ) ラッチ動作</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (ア) モーメンタリ動作</p>
+        </details>
+        
+        <h2>Q4 (05-1-d)</h2>
+        <p>c 接点スイッチが持つ端子の数はどれか。</p>
+        <ul>
+            <li>(ア) 2 個</li>
+<li>(イ) 3 個</li>
+<li>(ウ) 4 個</li>
+<li>(エ) 5 個</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (イ) 3 個</p>
+        </details>
+        
+        <h2>Q5 (05-1-e)</h2>
+        <p>照明の ON/OFF スイッチに適した動作はどれか。</p>
+        <ul>
+            <li>(ア) モーメンタリ動作</li>
+<li>(イ) オルタネート動作</li>
+<li>(ウ) シーケンス動作</li>
+<li>(エ) トリガ動作</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (イ) オルタネート動作</p>
+        </details>
+        
+        <h2>Q6 (05-2-a)</h2>
+        <p>電磁式リレーが動作する基本原理はどれか。</p>
+        <ul>
+            <li>(ア) 圧電効果</li>
+<li>(イ) 電磁誘導</li>
+<li>(ウ) 静電気力</li>
+<li>(エ) 電磁石の吸引力</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (エ) 電磁石の吸引力</p>
+        </details>
+        
+        <h2>Q7 (05-2-b)</h2>
+        <p>自己保持回路の主な目的はどれか。</p>
+        <ul>
+            <li>(ア) モーメンタリスイッチでオルタネート動作を実現すること</li>
+<li>(イ) 電力を節約すること</li>
+<li>(ウ) 回路の安全性を高めること</li>
+<li>(エ) 動作速度を向上させること</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (ア) モーメンタリスイッチでオルタネート動作を実現すること</p>
+        </details>
+        
+        <h2>Q8 (05-3-a)</h2>
+        <p>マイコンとロジック IC の使い分けとして最も適切なのはどれか。</p>
+        <ul>
+            <li>(ア) 複雑な条件判断はロジック IC,単純な処理はマイコン</li>
+<li>(イ) 複雑な条件判断はマイコン,単純な論理演算はロジック IC</li>
+<li>(ウ) どちらも常にマイコンを使うべき</li>
+<li>(エ) どちらも常にロジック IC を使うべき</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (イ) 複雑な条件判断はマイコン,単純な論理演算はロジック IC</p>
+        </details>
+        
+        <h2>Q9 (05-3-b)</h2>
+        <p>CMOS タイプの IC で絶対に避けなければならない接続方法はどれか。</p>
+        <ul>
+            <li>(ア) 電源電圧を 5V にすること</li>
+<li>(イ) 出力端子を複数接続すること</li>
+<li>(ウ) グランドに接続すること</li>
+<li>(エ) 入力端子をオープン(何も接続しない)にすること</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (エ) 入力端子をオープン(何も接続しない)にすること</p>
+        </details>
+        
+</body>
+</html>

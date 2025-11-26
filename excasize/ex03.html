@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>電気電子回路1 演習 03</title>
+    <style>
+        body { font-family: "Helvetica Neue", Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
+        h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; color: #007bff; }
+        h2 { margin-top: 30px; background-color: #f4f4f4; padding: 10px; border-left: 5px solid #007bff; font-size: 1.1em; }
+        ul { list-style-type: none; padding: 0; }
+        li { padding: 8px 0; border-bottom: 1px solid #eee; }
+        details { margin-top: 15px; background-color: #eef; border-radius: 5px; padding: 10px; cursor: pointer; transition: 0.2s; }
+        details:hover { background-color: #dde; }
+        summary { font-weight: bold; color: #0056b3; outline: none; }
+        details p { margin: 10px 0 0 0; font-weight: bold; color: #d63384; }
+        .nav { margin-bottom: 20px; padding: 10px; background: #f8f9fa; border-radius: 8px; text-align: center; }
+        .nav a { display: inline-block; margin: 0 5px; padding: 5px 10px; background: #fff; border: 1px solid #ddd; text-decoration: none; color: #333; border-radius: 4px; }
+        .nav a.active { background: #007bff; color: white; border-color: #007bff; }
+        .nav a:hover:not(.active) { background: #eee; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <strong>演習切替:</strong>
+        <a href="ex01.html" class="">01</a>
+        <a href="ex02.html" class="">02</a>
+        <a href="ex03.html" class="active">03</a>
+        <a href="ex04.html" class="">04</a>
+        <a href="ex05.html" class="">05</a>
+        <a href="ex06.html" class="">06</a>
+        <a href="ex07.html" class="">07</a>
+    </div>
+
+    <h1>電気電子回路1 - 演習 03</h1>
+    
+        <h2>Q1 (03-1-a)</h2>
+        <p>Arduino(5V)で赤色LED(Vf=2.0V, If=20mA)を点灯させる場合の電流制限抵抗Rとして適切な値は?</p>
+        <ul>
+            <li>(ア) 100Ω</li>
+<li>(イ) 150Ω</li>
+<li>(ウ) 220Ω</li>
+<li>(エ) 470Ω</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (イ) 150Ω</p>
+        </details>
+        
+        <h2>Q2 (03-1-b)</h2>
+        <p>【図1相当】赤・青・緑の3種類のLEDを同時に点灯させ、明るさを個別に調整するのに最適な接続方法は?</p>
+        <ul>
+            <li>(ア) 抵抗なしで直接接続</li>
+<li>(イ) 直列に接続し1つの抵抗で制御</li>
+<li>(ウ) 並列に接続しそれぞれに抵抗を付ける</li>
+<li>(エ) 並列に接続し1つの抵抗で制御</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (ウ) 並列に接続しそれぞれに抵抗を付ける</p>
+        </details>
+        
+        <h2>Q3 (03-2-a)</h2>
+        <p>一般的なシリコンダイオードの順電圧Vfはどの程度か?</p>
+        <ul>
+            <li>(ア) 0.1~0.2V</li>
+<li>(イ) 0.6~0.7V</li>
+<li>(ウ) 1.5~2.0V</li>
+<li>(エ) 3.0~5.0V</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (イ) 0.6~0.7V</p>
+        </details>
+        
+        <h2>Q4 (03-2-b)</h2>
+        <p>【図2相当】12V電源に抵抗10kΩとツェナーダイオードが直列に接続され、ツェナー電圧が5Vの場合、ツェナーダイオードの両端の出力電圧Voはいくらか。</p>
+        <ul>
+            <li>(ア) 12V</li>
+<li>(イ) 7V</li>
+<li>(ウ) 5V</li>
+<li>(エ) 0V</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (ウ) 5V</p>
+        </details>
+        
+        <h2>Q5 (03-2-c)</h2>
+        <p>定電圧回路でツェナーダイオードの正しい接続方向は?</p>
+        <ul>
+            <li>(ア) アノードを高電位側、カソードをGND側</li>
+<li>(イ) カソードを高電位側、アノードをGND側</li>
+<li>(ウ) どちらでも同じ</li>
+<li>(エ) 交流で使用する</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (イ) カソードを高電位側、アノードをGND側</p>
+        </details>
+        
+        <h2>Q6 (03-2-d)</h2>
+        <p>LED点灯回路でLEDの正しい接続方向は?</p>
+        <ul>
+            <li>(ア) アノードを高電位側、カソードをGND側</li>
+<li>(イ) カソードを高電位側、アノードをGND側</li>
+<li>(ウ) どちらでも同じ</li>
+<li>(エ) 交流で使用する</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (ア) アノードを高電位側、カソードをGND側</p>
+        </details>
+        
+        <h2>Q7 (03-3-a)</h2>
+        <p>Arduino(最大20mA)で、定格100mAの直流モータを制御する場合、正しい選択肢はどれか?</p>
+        <ul>
+            <li>(ア) デジタルピンから直接駆動可能</li>
+<li>(イ) 電圧が不足している</li>
+<li>(ウ) アナログピンから直接駆動可能</li>
+<li>(エ) 電流不足のためトランジスタが必要</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (エ) 電流不足のためトランジスタが必要</p>
+        </details>
+        
+        <h2>Q8 (03-3-b)</h2>
+        <p>電流増幅率hFE=100のNPNトランジスタでコレクタ電流Ic=100mAを得たいとき、必要なベース電流Ibは?</p>
+        <ul>
+            <li>(ア) 1mA</li>
+<li>(イ) 0.1mA</li>
+<li>(ウ) 10mA</li>
+<li>(エ) 100mA</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (ア) 1mA</p>
+        </details>
+        
+        <h2>Q9 (03-3-c)</h2>
+        <p>【図3相当】Arduino出力(5V)をベース抵抗Rbを介してNPNトランジスタのベースに接続し、エミッタ接地で使用する。必要ベース電流1mA、Vbe=0.7Vのとき、必要なベース抵抗Rbは?</p>
+        <ul>
+            <li>(ア) 2.2kΩ</li>
+<li>(イ) 5.0kΩ</li>
+<li>(ウ) 4.3kΩ</li>
+<li>(エ) 7.5kΩ</li>
+
+        </ul>
+        <details>
+            <summary>タップして答えを表示</summary>
+            <p>答え: (ウ) 4.3kΩ</p>
+        </details>
+        
+</body>
+</html>
