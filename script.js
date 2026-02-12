@@ -3,113 +3,113 @@
 const labels = ["(ア)", "(イ)", "(ウ)", "(エ)"];
 
 const app = {
-    mode: 'list', // 'list' or 'quiz'
-    category: 'all',
-    currentQuizIndex: 0,
-    filteredQuestions: [],
-    wrongQuestions: [],
+  mode: "list", // 'list' or 'quiz'
+  category: "all",
+  currentQuizIndex: 0,
+  filteredQuestions: [],
+  wrongQuestions: [],
 
-    init: function() {
-        // 1. カテゴリメニューを data.js の内容から自動生成
-        this.generateCategoryMenu();
-        
-        // 2. 最初のカテゴリを選択
-        this.selectCategory('all');
-    },
+  init: function () {
+    this.generateCategoryMenu();
+    this.selectCategory("all");
+  },
 
-    // カテゴリメニューの自動生成 (New!)
-    generateCategoryMenu: function() {
-        const select = document.getElementById('category-select');
-        select.innerHTML = ''; // 一旦空にする
+  // カテゴリメニューの自動生成（ID順にソートするよう修正）
+  generateCategoryMenu: function () {
+    const select = document.getElementById("category-select");
+    select.innerHTML = "";
 
-        // 「すべて」の選択肢を追加
-        const allOpt = document.createElement('option');
-        allOpt.value = 'all';
-        allOpt.text = '📚 すべての問題';
-        select.appendChild(allOpt);
+    const allOpt = document.createElement("option");
+    allOpt.value = "all";
+    allOpt.text = "📚 すべての問題";
+    select.appendChild(allOpt);
 
-        // data.js の categoryList から選択肢を追加
-        for (const [key, value] of Object.entries(categoryList)) {
-            const opt = document.createElement('option');
-            opt.value = key;
-            opt.text = value;
-            select.appendChild(opt);
-        }
-    },
+    // キーをソートして順序を保証する
+    const keys = Object.keys(categoryList).sort();
+    keys.forEach((key) => {
+      const opt = document.createElement("option");
+      opt.value = key;
+      opt.text = categoryList[key];
+      select.appendChild(opt);
+    });
+  },
 
-    setMode: function(mode) {
-        this.mode = mode;
-        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(`mode-${mode}`).classList.add('active');
-        this.resetQuizData();
-        this.render();
-    },
+  setMode: function (mode) {
+    this.mode = mode;
+    document
+      .querySelectorAll(".mode-btn")
+      .forEach((b) => b.classList.remove("active"));
+    document.getElementById(`mode-${mode}`).classList.add("active");
+    this.resetQuizData();
+    this.render();
+  },
 
-    selectCategory: function(cat) {
-        this.category = cat;
-        this.resetQuizData();
-        this.render();
-    },
+  selectCategory: function (cat) {
+    this.category = cat;
+    this.resetQuizData();
+    this.render();
+  },
 
-    resetQuizData: function(customList = null) {
-        this.currentQuizIndex = 0;
-        this.wrongQuestions = [];
+  resetQuizData: function (customList = null) {
+    this.currentQuizIndex = 0;
+    this.wrongQuestions = [];
 
-        if (customList) {
-            this.filteredQuestions = [...customList];
-            this.shuffle(this.filteredQuestions);
-            return;
-        }
+    if (customList) {
+      this.filteredQuestions = [...customList];
+      this.shuffle(this.filteredQuestions);
+      return;
+    }
 
-        let baseList = [];
-        if (this.category === 'all') {
-            baseList = [...quizData];
-        } else {
-            baseList = quizData.filter(q => q.cat === this.category);
-        }
+    let baseList = [];
+    if (this.category === "all") {
+      baseList = [...quizData];
+    } else {
+      baseList = quizData.filter((q) => q.cat === this.category);
+    }
 
-        if (this.mode === 'quiz') {
-            this.shuffle(baseList);
-        }
-        
-        this.filteredQuestions = baseList;
-    },
+    if (this.mode === "quiz") {
+      this.shuffle(baseList);
+    }
 
-    shuffle: function(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    },
+    this.filteredQuestions = baseList;
+  },
 
-    render: function() {
-        const container = document.getElementById('main-content');
-        container.innerHTML = '';
-        window.scrollTo(0,0);
-        
-        if (this.filteredQuestions.length === 0) {
-            container.innerHTML = '<p style="text-align:center;">このカテゴリに問題はありません。</p>';
-            return;
-        }
+  shuffle: function (array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  },
 
-        if (this.mode === 'list') {
-            this.renderListView(container);
-        } else {
-            this.renderQuizView(container);
-        }
-    },
+  render: function () {
+    const container = document.getElementById("main-content");
+    container.innerHTML = "";
+    window.scrollTo(0, 0);
 
-    renderListView: function(container) {
-        this.filteredQuestions.forEach((q, i) => {
-            const card = document.createElement('div');
-            card.className = 'question-card';
-            
-            const optsHtml = q.opts.map((o, idx) => 
-                `<li class="option-item">${labels[idx]} ${o}</li>`
-            ).join('');
+    if (this.filteredQuestions.length === 0) {
+      container.innerHTML =
+        '<p style="text-align:center;">このカテゴリに問題はありません。</p>';
+      return;
+    }
 
-            card.innerHTML = `
+    if (this.mode === "list") {
+      this.renderListView(container);
+    } else {
+      this.renderQuizView(container);
+    }
+  },
+
+  renderListView: function (container) {
+    this.filteredQuestions.forEach((q, i) => {
+      const card = document.createElement("div");
+      card.className = "question-card";
+
+      const optsHtml = q.opts
+        .map((o, idx) => `<li class="option-item">${labels[idx]} ${o}</li>`)
+        .join("");
+
+      card.innerHTML = `
                 <div class="q-header"><span>No. ${i + 1}</span> <span>ID: ${q.id}</span></div>
                 <div class="q-text">${q.q}</div>
                 <ul class="option-list">${optsHtml}</ul>
@@ -118,17 +118,17 @@ const app = {
                     <div class="ans-text">正解: ${labels[q.ans]} ${q.opts[q.ans]}</div>
                 </details>
             `;
-            container.appendChild(card);
-        });
-    },
+      container.appendChild(card);
+    });
+  },
 
-    renderQuizView: function(container) {
-        const q = this.filteredQuestions[this.currentQuizIndex];
-        const total = this.filteredQuestions.length;
+  renderQuizView: function (container) {
+    const q = this.filteredQuestions[this.currentQuizIndex];
+    const total = this.filteredQuestions.length;
 
-        const card = document.createElement('div');
-        card.className = 'question-card';
-        card.innerHTML = `
+    const card = document.createElement("div");
+    card.className = "question-card";
+    card.innerHTML = `
             <div class="q-header">
                 <span>問題 ${this.currentQuizIndex + 1} / ${total}</span>
                 <span>Category: ${q.cat}</span>
@@ -137,79 +137,84 @@ const app = {
             <div id="quiz-options"></div>
             <div id="result-msg" class="result-msg"></div>
             <div class="quiz-nav">
-                <button class="btn btn-secondary" onclick="app.prevQuiz()" ${this.currentQuizIndex === 0 ? 'disabled' : ''}>前へ</button>
+                <button class="btn btn-secondary" onclick="app.prevQuiz()" ${this.currentQuizIndex === 0 ? "disabled" : ""}>前へ</button>
                 <button id="btn-next" class="btn btn-next" onclick="app.nextQuiz()" disabled>次へ</button>
             </div>
         `;
-        container.appendChild(card);
+    container.appendChild(card);
 
-        const optsContainer = card.querySelector('#quiz-options');
-        q.opts.forEach((opt, idx) => {
-            const btn = document.createElement('button');
-            btn.className = 'quiz-option';
-            btn.textContent = `${labels[idx]} ${opt}`;
-            btn.onclick = () => this.checkAnswer(btn, idx, q.ans, q);
-            optsContainer.appendChild(btn);
-        });
-    },
+    const optsContainer = card.querySelector("#quiz-options");
+    q.opts.forEach((opt, idx) => {
+      const btn = document.createElement("button");
+      btn.className = "quiz-option";
+      btn.textContent = `${labels[idx]} ${opt}`;
+      btn.onclick = () => this.checkAnswer(btn, idx, q.ans, q);
+      optsContainer.appendChild(btn);
+    });
+  },
 
-    checkAnswer: function(btn, selectedIdx, correctIdx, questionObj) {
-        if (document.querySelector('.quiz-option.correct') || document.querySelector('.quiz-option.wrong')) return;
+  checkAnswer: function (btn, selectedIdx, correctIdx, questionObj) {
+    if (
+      document.querySelector(".quiz-option.correct") ||
+      document.querySelector(".quiz-option.wrong")
+    )
+      return;
 
-        const opts = document.querySelectorAll('.quiz-option');
-        const msg = document.getElementById('result-msg');
-        
-        if (selectedIdx === correctIdx) {
-            btn.classList.add('correct');
-            msg.textContent = "🙆‍♂️ 正解！";
-            msg.style.display = "block";
-            msg.style.backgroundColor = "#dcfce7";
-            msg.style.color = "#166534";
-        } else {
-            btn.classList.add('wrong');
-            opts[correctIdx].classList.add('correct');
-            msg.textContent = "🙅‍♀️ 不正解...";
-            msg.style.display = "block";
-            msg.style.backgroundColor = "#fee2e2";
-            msg.style.color = "#991b1b";
-            this.wrongQuestions.push(questionObj);
-        }
-        
-        document.getElementById('btn-next').disabled = false;
-    },
+    const opts = document.querySelectorAll(".quiz-option");
+    const msg = document.getElementById("result-msg");
 
-    nextQuiz: function() {
-        if (this.currentQuizIndex < this.filteredQuestions.length - 1) {
-            this.currentQuizIndex++;
-            this.render();
-        } else {
-            this.renderResultView();
-        }
-    },
+    if (selectedIdx === correctIdx) {
+      btn.classList.add("correct");
+      msg.textContent = "🙆‍♂️ 正解！";
+      msg.style.display = "block";
+      msg.style.backgroundColor = "#dcfce7";
+      msg.style.color = "#166534";
+    } else {
+      btn.classList.add("wrong");
+      opts[correctIdx].classList.add("correct");
+      msg.textContent = "🙅‍♀️ 不正解...";
+      msg.style.display = "block";
+      msg.style.backgroundColor = "#fee2e2";
+      msg.style.color = "#991b1b";
+      this.wrongQuestions.push(questionObj);
+    }
 
-    prevQuiz: function() {
-        if (this.currentQuizIndex > 0) {
-            this.currentQuizIndex--;
-            this.render();
-        }
-    },
-    
-    renderResultView: function() {
-        const container = document.getElementById('main-content');
-        const total = this.filteredQuestions.length;
-        const wrongCount = this.wrongQuestions.length;
-        const correctCount = total - wrongCount;
-        
-        let msg = "";
-        if (correctCount === total) msg = "素晴らしい！全問正解です🎉";
-        else if (correctCount >= total * 0.8) msg = "おしい！あと少し！👍";
-        else msg = "復習して再チャレンジしましょう💪";
+    document.getElementById("btn-next").disabled = false;
+  },
 
-        const retryWrongBtn = wrongCount > 0 
-            ? `<button class="btn btn-retry-wrong" onclick="app.retryWrong()">🔄 間違えた問題のみ (${wrongCount}問)</button>` 
-            : '';
+  nextQuiz: function () {
+    if (this.currentQuizIndex < this.filteredQuestions.length - 1) {
+      this.currentQuizIndex++;
+      this.render();
+    } else {
+      this.renderResultView();
+    }
+  },
 
-        container.innerHTML = `
+  prevQuiz: function () {
+    if (this.currentQuizIndex > 0) {
+      this.currentQuizIndex--;
+      this.render();
+    }
+  },
+
+  renderResultView: function () {
+    const container = document.getElementById("main-content");
+    const total = this.filteredQuestions.length;
+    const wrongCount = this.wrongQuestions.length;
+    const correctCount = total - wrongCount;
+
+    let msg = "";
+    if (correctCount === total) msg = "素晴らしい！全問正解です🎉";
+    else if (correctCount >= total * 0.8) msg = "おしい！あと少し！👍";
+    else msg = "復習して再チャレンジしましょう💪";
+
+    const retryWrongBtn =
+      wrongCount > 0
+        ? `<button class="btn btn-retry-wrong" onclick="app.retryWrong()">🔄 間違えた問題のみ (${wrongCount}問)</button>`
+        : "";
+
+    container.innerHTML = `
             <div class="question-card result-container">
                 <h2>テスト終了！</h2>
                 <div class="score-text">${correctCount} / ${total} 問 正解</div>
@@ -221,20 +226,20 @@ const app = {
                 </div>
             </div>
         `;
-    },
+  },
 
-    retryAll: function() {
-        this.resetQuizData();
-        this.render();
-    },
+  retryAll: function () {
+    this.resetQuizData();
+    this.render();
+  },
 
-    retryWrong: function() {
-        const wrongs = [...this.wrongQuestions];
-        this.resetQuizData(wrongs);
-        this.render();
-    }
+  retryWrong: function () {
+    const wrongs = [...this.wrongQuestions];
+    this.resetQuizData(wrongs);
+    this.render();
+  },
 };
 
-window.onload = function() {
-    app.init();
+window.onload = function () {
+  app.init();
 };
