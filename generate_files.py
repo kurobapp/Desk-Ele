@@ -1,619 +1,243 @@
-import json
-import os
+// 注意: quizData と categoryList は data.js から読み込まれます
 
-# 新しい演習 08〜13 のデータ
-quiz_data = [
-    # --- 演習 08 ---
-    {
-        "id": "08-1-a",
-        "cat": "08",
-        "q": "DCモータの回転速度を制御するために最も一般的に使用される方法はどれか。",
-        "opts": [
-            "電流の大きさを変える",
-            "電圧の大きさを変える",
-            "コイルの巻数を変える",
-            "磁石の強さを変える",
-        ],
-        "ans": 1,
-    },
-    {
-        "id": "08-1-b",
-        "cat": "08",
-        "q": "H ブリッジ回路の主な目的は何か。",
-        "opts": [
-            "電圧を増幅する",
-            "電流を制限する",
-            "モータの回転方向を制御する",
-            "ノイズを除去する",
-        ],
-        "ans": 2,
-    },
-    {
-        "id": "08-1-c",
-        "cat": "08",
-        "q": "PWM信号におけるデューティ比とは何を表すか。",
-        "opts": [
-            "信号の周波数",
-            "信号の最大電圧",
-            "一周期中のON時間の割合",
-            "信号の波形の形状",
-        ],
-        "ans": 2,
-    },
-    {
-        "id": "08-1-d",
-        "cat": "08",
-        "q": "ステッピングモータの最大の特徴は何か。",
-        "opts": [
-            "フィードバックセンサが必要",
-            "パルス数で正確な角度制御ができる",
-            "高速回転に特化している",
-            "連続回転のみ可能",
-        ],
-        "ans": 1,
-    },
-    {
-        "id": "08-1-e",
-        "cat": "08",
-        "q": "一般的なサーボモータをマイコンで制御する場合、角度を指定するために使用する信号はどれか。",
-        "opts": [
-            "PWM信号のパルス幅",
-            "送信するパルス数",
-            "PWM信号の周波数",
-            "印加する電圧の大きさ",
-        ],
-        "ans": 0,
-    },
-    {
-        "id": "08-1-f",
-        "cat": "08",
-        "q": "ソレノイドの駆動回路で、コイルと並列に接続するフリーホイールダイオードの目的は何か。",
-        "opts": [
-            "電流を増幅する",
-            "サージ電圧から回路を保護する",
-            "動作速度を向上させる",
-            "消費電力を削減する",
-        ],
-        "ans": 1,
-    },
-    {
-        "id": "08-1-g",
-        "cat": "08",
-        "q": "モータドライバICを使用する最大のメリットは何か。",
-        "opts": [
-            "モータの回転速度が上がる",
-            "電力消費が削減される",
-            "回路設計が簡単になり保護機能が付く",
-            "モータの寿命が延びる",
-        ],
-        "ans": 2,
-    },
-    {
-        "id": "08-1-h",
-        "cat": "08",
-        "q": "PWM による電圧制御で、デューティ比が50%の時の出力電圧は、電源電圧5Vの場合いくらか。",
-        "opts": ["2.5V", "5V", "1.25V", "10V"],
-        "ans": 0,
-    },
-    {
-        "id": "08-1-i",
-        "cat": "08",
-        "q": "DCモータで大きなトルクを得るために一般的に使用される方法は何か。",
-        "opts": [
-            "回転速度を上げる",
-            "ギア(歯車)を使用する",
-            "コイルの材質を変える",
-            "磁石を大きくする",
-        ],
-        "ans": 1,
-    },
-    # --- 演習 09 ---
-    {
-        "id": "09-1-a",
-        "cat": "09",
-        "q": "電子工作でセンサから情報を取得する際、デジタル信号とアナログ信号のどちらを選ぶかを判断する最も重要な観点はどれか。",
-        "opts": [
-            "デジタル信号の方が高性能であること",
-            "取得したい情報の性質と必要な精度",
-            "アナログ信号の方が処理が簡単であること",
-            "見た目がかっこいい方を選ぶ",
-        ],
-        "ans": 1,
-    },
-    {
-        "id": "09-1-b",
-        "cat": "09",
-        "q": "複数の様々な種類のセンサを1つのマイコンに接続する際の重要な設計方針はどれか。",
-        "opts": [
-            "すべて同じ通信方式で統一する",
-            "各センサの通信要件とマイコンの利用可能なピン数を考慮する",
-            "可能な限り低速な通信方式を選ぶ",
-            "可能な限り配線が多い方式を選ぶ",
-        ],
-        "ans": 1,
-    },
-    {
-        "id": "09-1-c",
-        "cat": "09",
-        "q": "電子工作において「情報伝達の信頼性」を高めるための最も基本的な考え方はどれか。",
-        "opts": [
-            "配線の接続を確実に行い、電源を安定供給する",
-            "通信速度を上げる",
-            "より多くの信号線を使用する",
-            "部品の色を統一する",
-        ],
-        "ans": 0,
-    },
-    {
-        "id": "09-1-d",
-        "cat": "09",
-        "q": "複数の様々な種類のセンサから同時にデータを取得する際、データの読み取りタイミングで最も注意すべき点はどれか。",
-        "opts": [
-            "すべてのセンサを全く同じタイミングで読み取る",
-            "最も高速なセンサに合わせて読み取り間隔を設定する",
-            "データの読み取り順序をアルファベット順にする",
-            "各センサの応答時間の違いを考慮してデータ取得のタイミングを調整する",
-        ],
-        "ans": 3,
-    },
-    {
-        "id": "09-1-e",
-        "cat": "09",
-        "q": "有線通信と無線通信を選択する際、最も重要な判断基準はどれか。",
-        "opts": [
-            "システムの用途と設置環境の制約",
-            "無線通信の方が先進的である",
-            "有線通信の方が安価である",
-            "通信速度の比較のみ",
-        ],
-        "ans": 0,
-    },
-    {
-        "id": "09-1-f",
-        "cat": "09",
-        "q": "Arduino UNO からPCにデバッグ情報を送信し、シリアルモニタで確認したい場合に最も適した通信方式はどれか。",
-        "opts": ["UART 通信", "SPI通信", "I2C通信", "パラレル通信"],
-        "ans": 0,
-    },
-    {
-        "id": "09-1-g",
-        "cat": "09",
-        "q": "2本の信号線のみで全てのセンサからデジタルデータを取得したい場合に最も適した通信方式はどれか。",
-        "opts": ["UART 通信", "SPI通信", "I2C通信", "パラレル通信"],
-        "ans": 2,
-    },
-    {
-        "id": "09-1-h",
-        "cat": "09",
-        "q": "SDカードへの高速書き込みや液晶への描画など、大量のデータを高速転送する必要がある場合に最も適した通信方式はどれか。",
-        "opts": ["UART 通信", "SPI通信", "I2C通信", "赤外線通信"],
-        "ans": 1,
-    },
-    # --- 演習 10 ---
-    {
-        "id": "10-1-a",
-        "cat": "10",
-        "q": "単三(AA, LR6) アルカリ乾電池の公称電圧として正しいのはどれか。",
-        "opts": ["1.5V", "1.2V", "3.7V", "5.0V"],
-        "ans": 0,
-    },
-    {
-        "id": "10-1-b",
-        "cat": "10",
-        "q": "DCDCコンバータの主な機能はどれか。",
-        "opts": [
-            "直流を交流に変換する",
-            "直流を直流に変換する",
-            "交流を直流に変換する",
-            "交流を交流に変換する",
-        ],
-        "ans": 1,
-    },
-    {
-        "id": "10-1-c",
-        "cat": "10",
-        "q": "スイッチング方式電源の特徴として正しいのはどれか。",
-        "opts": [
-            "回路がシンプルで大きくて重い",
-            "回路が複雑で大きくて重い",
-            "回路がシンプルで小さくて軽い",
-            "回路が複雑で小さくて軽い",
-        ],
-        "ans": 3,
-    },
-    {
-        "id": "10-1-d",
-        "cat": "10",
-        "q": "リニア方式 (ドロッパー方式) 電源の特徴として正しいのはどれか。",
-        "opts": [
-            "回路はシンプルであるが、大きくて重い",
-            "回路は複雑であるが、小さくて軽い",
-            "回路はシンプルで、小さくて軽い",
-            "回路は複雑で、大きくて重い",
-        ],
-        "ans": 0,
-    },
-    {
-        "id": "10-1-e",
-        "cat": "10",
-        "q": "リニア電源のノイズ特性と発熱特性の組み合わせとして正しいのはどれか。",
-        "opts": [
-            "ノイズが多く、発熱が多い",
-            "ノイズが多く、発熱が少ない",
-            "ノイズが少なく、発熱が多い",
-            "ノイズが少なく、発熱が少ない",
-        ],
-        "ans": 2,
-    },
-    {
-        "id": "10-1-f",
-        "cat": "10",
-        "q": "スイッチング電源のノイズ特性と発熱特性の組み合わせとして正しいのはどれか。",
-        "opts": [
-            "ノイズが多く、発熱が多い",
-            "ノイズが多く、発熱が少ない",
-            "ノイズが少なく、発熱が多い",
-            "ノイズが少なく、発熱が少ない",
-        ],
-        "ans": 1,
-    },
-    {
-        "id": "10-1-g",
-        "cat": "10",
-        "q": "容量4000mAhの電池を2Aの電流で使用した場合の理論使用時間はどれか。",
-        "opts": ["2時間", "4時間", "8時間", "16時間"],
-        "ans": 0,
-    },
-    {
-        "id": "10-1-h",
-        "cat": "10",
-        "q": "直流安定化電源の正しい使用手順はどれか。",
-        "opts": [
-            "回路接続→出力ボタン ON→出力設定",
-            "出力ボタンON→出力設定→回路接続",
-            "出力ボタンON→回路接続→出力設定",
-            "出力設定→回路接続→出力ボタン ON",
-        ],
-        "ans": 3,
-    },
-    {
-        "id": "10-1-i",
-        "cat": "10",
-        "q": "バッテリーのSOC (States of Charge) 50%の状態の説明として正しいのはどれか。",
-        "opts": [
-            "電池容量の50%が劣化している",
-            "電池容量の50%まで充電されている",
-            "電池の充電速度が50%に低下している",
-            "電池の出力電圧が50%低下している",
-        ],
-        "ans": 1,
-    },
-    {
-        "id": "10-1-j",
-        "cat": "10",
-        "q": "バッテリーのSOH (States of Health)が低下した場合に起こる現象として正しいのはどれか。",
-        "opts": [
-            "充電効率が向上する",
-            "電池電圧が上昇する",
-            "使用可能時間が短くなる",
-            "充電容量が増加する",
-        ],
-        "ans": 2,
-    },
-    # --- 演習 11 ---
-    {
-        "id": "11-1-a",
-        "cat": "11",
-        "q": "デジタルマルチメータ (DMM) の基本的な測定機能として含まれないものはどれか。",
-        "opts": ["直流電圧", "直流電流", "抵抗値", "交流波形の観測"],
-        "ans": 3,
-    },
-    {
-        "id": "11-1-b",
-        "cat": "11",
-        "q": "オシロスコープがデジタルマルチメータ (DMM) と比べて優れている点はどれか。",
-        "opts": [
-            "抵抗値の測定機能",
-            "小型化と携帯性",
-            "電気信号の時間変化の観測",
-            "直流電圧の測定精度",
-        ],
-        "ans": 2,
-    },
-    {
-        "id": "11-1-c",
-        "cat": "11",
-        "q": "真値が1000, 測定値が1050の場合、絶対誤差はいくらか。",
-        "opts": ["50", "-50", "5%", "1050"],
-        "ans": 0,
-    },
-    {
-        "id": "11-1-d",
-        "cat": "11",
-        "q": "真値が200, 測定値が180の場合、相対誤差は何%か。",
-        "opts": ["15%", "20%", "5%", "10%"],
-        "ans": 3,
-    },
-    {
-        "id": "11-1-e",
-        "cat": "11",
-        "q": "センサ信号の一般的な処理フローとして正しい順序はどれか。",
-        "opts": [
-            "センサ素子→アンプ→A-D変換→マイコン",
-            "アンプ→センサ素子→A-D変換→マイコン",
-            "センサ素子→A-D変換→アンプ→マイコン",
-            "A-D変換→センサ素子→アンプ→マイコン",
-        ],
-        "ans": 0,
-    },
-    {
-        "id": "11-1-f",
-        "cat": "11",
-        "q": "超音波センサで距離L [m]を測定する式として正しいものはどれか。(V:速さ, T:往復時間)",
-        "opts": ["L=V/(2T)", "L=2VT", "L=VT/2", "L=VT"],
-        "ans": 2,
-    },
-    {
-        "id": "11-1-g",
-        "cat": "11",
-        "q": "ドローンの姿勢制御に必要なセンサの組み合わせとして最も適切なものはどれか。",
-        "opts": [
-            "温度センサ+湿度センサ",
-            "加速度センサ+温度センサ",
-            "加速度センサ+ジャイロセンサ",
-            "ジャイロセンサ+照度センサ",
-        ],
-        "ans": 2,
-    },
-    {
-        "id": "11-1-h",
-        "cat": "11",
-        "q": "スマートフォンの画面を自動回転させる機能に主に使われるセンサはどれか。",
-        "opts": ["ひずみゲージ", "磁気センサ", "ジャイロセンサ", "加速度センサ"],
-        "ans": 3,
-    },
-    {
-        "id": "11-1-i",
-        "cat": "11",
-        "q": "CdS セルは明るいときに抵抗が小さく、暗いときに大きくなる。暗いときにLEDを点灯させる回路として正しいものはどれか。",
-        "opts": [
-            "抵抗が大きいときLED点灯",
-            "温度が上昇したときLED点灯",
-            "抵抗が小さいときLED点灯",
-            "CdS セルの色が変化したときLED点灯",
-        ],
-        "ans": 0,
-    },
-    {
-        "id": "11-1-j",
-        "cat": "11",
-        "q": "イメージセンサを用いたライン追従ロボットで、黒い線を検出する正しい利用方法はどれか。",
-        "opts": [
-            "全画素の平均輝度から判定する",
-            "1画素の明るさだけで判定する",
-            "距離センサとして使用する",
-            "画像を処理して線の位置を検出する",
-        ],
-        "ans": 3,
-    },
-    # --- 演習 12 ---
-    {
-        "id": "12-1-a",
-        "cat": "12",
-        "q": "スイッチがOFFの時、プルアップ抵抗を使用した回路の INPUT 端子の状態はどれか。",
-        "opts": [
-            "INPUT 端子の電圧は不安定になる",
-            "INPUT端子の電圧はVCCと同じになる",
-            "INPUT端子の電圧はOV (GND)になる",
-            "INPUT端子の電圧はVCC/2になる",
-        ],
-        "ans": 1,
-    },
-    {
-        "id": "12-1-b",
-        "cat": "12",
-        "q": "反転増幅回路(R1=2k, R2=10k, Vin=1V)の出力電圧はいくらか。※公式: Vout=-(R2/R1)*Vin",
-        "opts": ["0.2V", "5V", "-0.2V", "-5V"],
-        "ans": 3,
-    },
-    {
-        "id": "12-1-c",
-        "cat": "12",
-        "q": "非反転増幅回路(R1=3k, R2=9k, Vin=2V)の出力電圧はいくらか。※公式: Vout=(1+R2/R1)*Vin",
-        "opts": ["-8V", "-6V", "8V", "6V"],
-        "ans": 2,
-    },
-    {
-        "id": "12-1-d",
-        "cat": "12",
-        "q": "ローパスフィルタ(R=1kΩ, C=0.1μF)の遮断周波数はどれか。※公式: f=1/(2πRC)",
-        "opts": ["約1.6kHz", "約160Hz", "約16Hz", "約16kHz"],
-        "ans": 0,
-    },
-    {
-        "id": "12-1-e",
-        "cat": "12",
-        "q": "ハイパスフィルタで遮断周波数100Hz、C=1μFのとき、必要な抵抗Rは約いくつか。",
-        "opts": ["約160Ω", "約1.6kΩ", "約16kΩ", "約160kΩ"],
-        "ans": 1,
-    },
-    {
-        "id": "12-1-f",
-        "cat": "12",
-        "q": "差動増幅回路(R1=5k, R2=15k, V1=1V, V2=2V)の出力電圧はいくらか。※公式: Vout=(R2/R1)*(V2-V1)",
-        "opts": ["-9V", "-3V", "9V", "3V"],
-        "ans": 3,
-    },
-    {
-        "id": "12-1-g",
-        "cat": "12",
-        "q": "電圧加算回路(R1=4k, R2=12k, V1=0.5V, V2=1V)の出力電圧はいくらか。※公式: Vout=-(R2/R1)*(V1+V2)",
-        "opts": ["-4.5V", "4.5V", "1.5V", "-1.5V"],
-        "ans": 0,
-    },
-    # --- 演習 13 ---
-    {
-        "id": "13-1-a",
-        "cat": "13",
-        "q": "回路図で十字交差している線が接続されていることを明確に示すために使用される記号は何か。",
-        "opts": ["△印", "●印", "□印", "×印"],
-        "ans": 1,
-    },
-    {
-        "id": "13-1-b",
-        "cat": "13",
-        "q": "回路図でVCCやGNDなどの電源記号が使われる理由として最も適切なものはどれか。",
-        "opts": [
-            "配線を簡潔にし、回路図を見やすくするため",
-            "部品の消費電力を表示するため",
-            "電流の向きを示すため",
-            "抵抗値を計算するため",
-        ],
-        "ans": 0,
-    },
-    {
-        "id": "13-1-c",
-        "cat": "13",
-        "q": "ブレッドボードの説明として正しいものはどれか。",
-        "opts": [
-            "はんだ付けが必要で、永続的な回路を作れる",
-            "ブリント基板と同じ構造を持つ",
-            "部品を差し込むだけで、はんだ付けなしに回路を組める",
-            "コネクタ専用の基板である",
-        ],
-        "ans": 2,
-    },
-    {
-        "id": "13-1-d",
-        "cat": "13",
-        "q": "正しいはんだ付けの手順はどれか。",
-        "opts": [
-            "はんだを溶かす→こてを当てる→こてを離す→はんだを離す",
-            "こてを当てる→はんだを溶かす→こてを離す→はんだを離す",
-            "はんだを溶かす→こてを離す→こてを当てる→はんだを離す",
-            "こてを当てる→はんだを溶かす→はんだを離す→こてを離す",
-        ],
-        "ans": 3,
-    },
-    {
-        "id": "13-1-e",
-        "cat": "13",
-        "q": "ユニバーサル基板の説明として正しいものはどれか。",
-        "opts": [
-            "既に配線が完成されており、部品を置くだけで使用できる",
-            "部品取り付け用の穴とランドがあり、はんだ付けで配線する",
-            "ブレッドボードと同じ使い方をする基板",
-            "コネクタ専用の基板",
-        ],
-        "ans": 1,
-    },
-    {
-        "id": "13-1-f",
-        "cat": "13",
-        "q": "コネクタの基本構成要素に含まれないものはどれか。",
-        "opts": ["コンタクト", "ハウジング", "ベース付きポスト", "はんだ"],
-        "ans": 3,
-    },
-    {
-        "id": "13-1-g",
-        "cat": "13",
-        q: "ロボット製作等でブレッドボードよりユニバーサル基板等が推奨される理由はどれか。",
-        "opts": [
-            "ブレッドボードの方が高価だから",
-            "ブレッドボードは部品が外れやすく、動作が不安定になりやすいから",
-            "ブレッドボードの穴の数が足りないから",
-            "ブレッドボードの見た目が良くないから",
-        ],
-        "ans": 1,
-    },
-    {
-        "id": "13-1-h",
-        cat: "13",
-        q: "PCBを使う場合の注意点として最も適切なものはどれか。",
-        "opts": [
-            "配線が固定されているため、回路の変更が容易ではない",
-            "部品を差し替えれば簡単に回路を変更できる",
-            "部品は極性を無視して取り付けられる",
-            "PCBは必ずはんだ付け不要で動作する",
-        ],
-        "ans": 0,
-    },
-]
+const labels = ["(ア)", "(イ)", "(ウ)", "(エ)"];
 
-output_folder = "excasize"
-os.makedirs(output_folder, exist_ok=True)
+const app = {
+    mode: 'list', // 'list' or 'quiz'
+    category: 'all',
+    currentQuizIndex: 0,
+    filteredQuestions: [],
+    wrongQuestions: [],
 
-# HTMLテンプレート
-template = """<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>電気電子回路1 演習 {cat}</title>
-    <style>
-        body {{ font-family: "Helvetica Neue", Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }}
-        h1 {{ border-bottom: 2px solid #eee; padding-bottom: 10px; color: #007bff; }}
-        h2 {{ margin-top: 30px; background-color: #f4f4f4; padding: 10px; border-left: 5px solid #007bff; font-size: 1.1em; }}
-        ul {{ list-style-type: none; padding: 0; }}
-        li {{ padding: 8px 0; border-bottom: 1px solid #eee; }}
-        details {{ margin-top: 15px; background-color: #eef; border-radius: 5px; padding: 10px; cursor: pointer; transition: 0.2s; }}
-        details:hover {{ background-color: #dde; }}
-        summary {{ font-weight: bold; color: #0056b3; outline: none; }}
-        details p {{ margin: 10px 0 0 0; font-weight: bold; color: #d63384; }}
-        .nav {{ margin-bottom: 20px; padding: 10px; background: #f8f9fa; border-radius: 8px; text-align: center; }}
-        .nav a {{ display: inline-block; margin: 0 5px; padding: 5px 10px; background: #fff; border: 1px solid #ddd; text-decoration: none; color: #333; border-radius: 4px; }}
-        .nav a.active {{ background: #007bff; color: white; border-color: #007bff; }}
-        .nav a:hover:not(.active) {{ background: #eee; }}
-    </style>
-</head>
-<body>
-    <div class="nav">
-        <strong>演習切替:</strong>
-        {nav_links}
-    </div>
+    init: function() {
+        // 1. カテゴリメニューを data.js の内容から自動生成
+        this.generateCategoryMenu();
 
-    <h1>電気電子回路1 - 演習 {cat}</h1>
-    {content}
-</body>
-</html>
-"""
+        // 2. 最初のカテゴリを選択
+        this.selectCategory('all');
+    },
 
-categories = ["08", "09", "10", "11", "12", "13"]
-labels = ["(ア)", "(イ)", "(ウ)", "(エ)"]
+    // カテゴリメニューの自動生成（ソート機能を追加）
+    generateCategoryMenu: function() {
+        const select = document.getElementById('category-select');
+        select.innerHTML = ''; // 一旦空にする
 
-for target_cat in categories:
-    content_html = ""
-    questions = [q for q in quiz_data if q["cat"] == target_cat]
+        // 「すべて」の選択肢を追加
+        const allOpt = document.createElement('option');
+        allOpt.value = 'all';
+        allOpt.text = '📚 すべての問題';
+        select.appendChild(allOpt);
 
-    for i, q in enumerate(questions):
-        opts_html = "".join(
-            [f"<li>{labels[j]} {opt}</li>\n" for j, opt in enumerate(q["opts"])]
-        )
-        correct_answer = f"{labels[q['ans']]} {q['opts'][q['ans']]}"
-        content_html += f"""
-        <h2>Q{i + 1} ({q["id"]})</h2>
-        <p>{q["q"]}</p>
-        <ul>
-            {opts_html}
-        </ul>
-        <details>
-            <summary>タップして答えを表示</summary>
-            <p>答え: {correct_answer}</p>
-        </details>
-        """
+        // キーを取得して明示的に並び替え
+        const keys = Object.keys(categoryList).sort();
 
-    # ナビゲーションバーを動的に生成
-    nav_links = ""
-    for c in categories:
-        is_active = "active" if c == target_cat else ""
-        nav_links += f'<a href="ex{c}.html" class="{is_active}">{c}</a>\n'
+        // 並び替えたキー順に選択肢を追加
+        keys.forEach(key => {
+            const opt = document.createElement('option');
+            opt.value = key;
+            opt.text = categoryList[key];
+            select.appendChild(opt);
+        });
+    },
 
-    final_html = template.format(
-        cat=target_cat, content=content_html, nav_links=nav_links
-    )
-    filename = os.path.join(output_folder, f"ex{target_cat}.html")
-    with open(filename, "w", encoding="utf-8") as f:
-        f.write(final_html)
-    print(f"Generated: {filename}")
+    setMode: function(mode) {
+        this.mode = mode;
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(`mode-${mode}`).classList.add('active');
+        this.resetQuizData();
+        this.render();
+    },
 
-print(f"完了: すべてのHTMLファイルが '{output_folder}' フォルダーに生成されました。")
+    selectCategory: function(cat) {
+        this.category = cat;
+        this.resetQuizData();
+        this.render();
+    },
+
+    resetQuizData: function(customList = null) {
+        this.currentQuizIndex = 0;
+        this.wrongQuestions = [];
+
+        if (customList) {
+            this.filteredQuestions = [...customList];
+            this.shuffle(this.filteredQuestions);
+            return;
+        }
+
+        let baseList = [];
+        if (this.category === 'all') {
+            baseList = [...quizData];
+        } else {
+            baseList = quizData.filter(q => q.cat === this.category);
+        }
+
+        if (this.mode === 'quiz') {
+            this.shuffle(baseList);
+        }
+
+        this.filteredQuestions = baseList;
+    },
+
+    shuffle: function(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    },
+
+    render: function() {
+        const container = document.getElementById('main-content');
+        container.innerHTML = '';
+        window.scrollTo(0,0);
+
+        if (this.filteredQuestions.length === 0) {
+            container.innerHTML = '<p style="text-align:center;">このカテゴリに問題はありません。</p>';
+            return;
+        }
+
+        if (this.mode === 'list') {
+            this.renderListView(container);
+        } else {
+            this.renderQuizView(container);
+        }
+    },
+
+    renderListView: function(container) {
+        this.filteredQuestions.forEach((q, i) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+
+            const optsHtml = q.opts.map((o, idx) =>
+                `<li class="option-item">${labels[idx]} ${o}</li>`
+            ).join('');
+
+            card.innerHTML = `
+                <div class="q-header"><span>No. ${i + 1}</span> <span>ID: ${q.id}</span></div>
+                <div class="q-text">${q.q}</div>
+                <ul class="option-list">${optsHtml}</ul>
+                <details>
+                    <summary>答えを見る</summary>
+                    <div class="ans-text">正解: ${labels[q.ans]} ${q.opts[q.ans]}</div>
+                </details>
+            `;
+            container.appendChild(card);
+        });
+    },
+
+    renderQuizView: function(container) {
+        const q = this.filteredQuestions[this.currentQuizIndex];
+        const total = this.filteredQuestions.length;
+
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.innerHTML = `
+            <div class="q-header">
+                <span>問題 ${this.currentQuizIndex + 1} / ${total}</span>
+                <span>Category: ${q.cat}</span>
+            </div>
+            <div class="q-text">${q.q}</div>
+            <div id="quiz-options"></div>
+            <div id="result-msg" class="result-msg"></div>
+            <div class="quiz-nav">
+                <button class="btn btn-secondary" onclick="app.prevQuiz()" ${this.currentQuizIndex === 0 ? 'disabled' : ''}>前へ</button>
+                <button id="btn-next" class="btn btn-next" onclick="app.nextQuiz()" disabled>次へ</button>
+            </div>
+        `;
+        container.appendChild(card);
+
+        const optsContainer = card.querySelector('#quiz-options');
+        q.opts.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'quiz-option';
+            btn.textContent = `${labels[idx]} ${opt}`;
+            btn.onclick = () => this.checkAnswer(btn, idx, q.ans, q);
+            optsContainer.appendChild(btn);
+        });
+    },
+
+    checkAnswer: function(btn, selectedIdx, correctIdx, questionObj) {
+        if (document.querySelector('.quiz-option.correct') || document.querySelector('.quiz-option.wrong')) return;
+
+        const opts = document.querySelectorAll('.quiz-option');
+        const msg = document.getElementById('result-msg');
+
+        if (selectedIdx === correctIdx) {
+            btn.classList.add('correct');
+            msg.textContent = "🙆‍♂️ 正解！";
+            msg.style.display = "block";
+            msg.style.backgroundColor = "#dcfce7";
+            msg.style.color = "#166534";
+        } else {
+            btn.classList.add('wrong');
+            opts[correctIdx].classList.add('correct');
+            msg.textContent = "🙅‍♀️ 不正解...";
+            msg.style.display = "block";
+            msg.style.backgroundColor = "#fee2e2";
+            msg.style.color = "#991b1b";
+            this.wrongQuestions.push(questionObj);
+        }
+
+        document.getElementById('btn-next').disabled = false;
+    },
+
+    nextQuiz: function() {
+        if (this.currentQuizIndex < this.filteredQuestions.length - 1) {
+            this.currentQuizIndex++;
+            this.render();
+        } else {
+            this.renderResultView();
+        }
+    },
+
+    prevQuiz: function() {
+        if (this.currentQuizIndex > 0) {
+            this.currentQuizIndex--;
+            this.render();
+        }
+    },
+
+    renderResultView: function() {
+        const container = document.getElementById('main-content');
+        const total = this.filteredQuestions.length;
+        const wrongCount = this.wrongQuestions.length;
+        const correctCount = total - wrongCount;
+
+        let msg = "";
+        if (correctCount === total) msg = "素晴らしい！全問正解です🎉";
+        else if (correctCount >= total * 0.8) msg = "おしい！あと少し！👍";
+        else msg = "復習して再チャレンジしましょう💪";
+
+        const retryWrongBtn = wrongCount > 0
+            ? `<button class="btn btn-retry-wrong" onclick="app.retryWrong()">🔄 間違えた問題のみ (${wrongCount}問)</button>`
+            : '';
+
+        container.innerHTML = `
+            <div class="question-card result-container">
+                <h2>テスト終了！</h2>
+                <div class="score-text">${correctCount} / ${total} 問 正解</div>
+                <p>${msg}</p>
+                <div class="result-actions">
+                    <button class="btn btn-retry-all" onclick="app.retryAll()">🔄 もう一度 (全問ランダム)</button>
+                    ${retryWrongBtn}
+                    <button class="btn btn-home" onclick="app.selectCategory('all'); app.setMode('list');">🏠 一覧に戻る</button>
+                </div>
+            </div>
+        `;
+    },
+
+    retryAll: function() {
+        this.resetQuizData();
+        this.render();
+    },
+
+    retryWrong: function() {
+        const wrongs = [...this.wrongQuestions];
+        this.resetQuizData(wrongs);
+        this.render();
+    }
+};
+
+window.onload = function() {
+    app.init();
+};
